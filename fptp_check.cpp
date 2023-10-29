@@ -177,8 +177,8 @@ int Electorate::pickNextVoter(int difference)
                 if (roamer == citizens.end()) {
                     roamer = citizens.begin();
                 }
+                roamer++;
             }
-            roamer++;
         }
     } else {
         if (roamer == citizens.begin()) {
@@ -195,8 +195,8 @@ int Electorate::pickNextVoter(int difference)
                 if (roamer == citizens.begin()) {
                     roamer = citizens.end();
                 }
+                roamer--;
             }
-            roamer--;
         }
     }
     return retVal;
@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
             Voter newVoter = Voter(i);
             electorate.addElector(newVoter);
         }
-        cout << "Generation of " << scotland.getPartyName(i) << "voters complete." << endl;
+        cout << "Generation of " << scotland.getPartyName(i) << " voters complete." << endl;
     }
     cout << "Now creating results" << endl;
     const unsigned int averageTurnout = scotland.getAverageTurnout();
@@ -251,7 +251,7 @@ int main(int argc, char* argv[])
     uniform_int_distribution<> direction(-99, 100);
     for (int i = 0; i < scotland.getConstituencies(); i++)
     {
-        cout << "Generating result for constituency " << i << ":" << flush;
+        cout << "Generating result for constituency " << i + 1 << ":" << flush;
         vector<int> votes(partyCount, 0);
         //initial step is for whole domain - until we find a valid voter
         bool voterValid = false;
@@ -268,7 +268,7 @@ int main(int argc, char* argv[])
         for (int j = 1; j < averageTurnout; j++)
         {
             int selected = direction(mt);
-            unsigned int partyVote = electorate.voterAt(selected);
+            unsigned int partyVote = electorate.pickNextVoter(selected);
             votes[partyVote]++;
         }
         for (int j = 0; j < partyCount; j++)
