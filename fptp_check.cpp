@@ -200,8 +200,7 @@ int Electorate::pickNextVoter(int difference)
 int main(int argc, char* argv[])
 {
     // initialise random numbers
-    random_device rd;
-    mt19937 mt(rd());
+    default_random_engine eng{static_cast<long unsigned int>(time(0))};
     // Create Scottish results
     cout << "Generating party results" << endl;
     Results scotland(2759061, 59);
@@ -253,7 +252,7 @@ int main(int argc, char* argv[])
         int selected;
         int partyVote;
         while (!voterValid) {
-            selected = distrib(mt);
+            selected = distrib(eng);
             partyVote = electorate.voterAt(selected);
             if (partyVote >= 0) {
                 voterValid = true;
@@ -262,7 +261,7 @@ int main(int argc, char* argv[])
         (votes.at(partyVote))++;
         for (int j = 1; j < averageTurnout; j++)
         {
-            int selected = direction(mt);
+            int selected = direction(eng);
             unsigned int partyVote = electorate.pickNextVoter(selected);
             (votes.at(partyVote))++;
         }
