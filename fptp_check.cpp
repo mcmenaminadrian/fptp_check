@@ -271,5 +271,29 @@ int main(int argc, char* argv[])
             cout << scotland.getPartyName(j) << ":" << votes.at(j) << "  ";
         }
         cout << endl;
+        //calculate winner
+        int winningParty = partyCount - 1;
+        for (int m = 0; m < partyCount - 1; m++)
+        {
+            bool winnerFound = true;
+            for (int n = 0; n < partyCount; n++)
+            {
+                if (votes.at(m) < votes.at(n)) {
+                    winnerFound = false;
+                    break;
+                }
+            }
+            if (winnerFound) {
+                winningParty = m;
+                break;
+            }
+        }
+        (victories.at(winningParty))++;
+        cout << "Running score: ";
+        for (int m = 0; m < partyCount; m++)
+        {
+            cout << scotland.getPartyName(m) << ": " << victories.at(m) << "   ";
+        }
+        cout << endl;
     }
 }
