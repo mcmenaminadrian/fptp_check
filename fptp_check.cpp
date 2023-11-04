@@ -150,8 +150,8 @@ int Electorate::voterAt(unsigned int index)
 {
     int retVal = -1;
     roamer = citizens.begin();
+    advance(roamer, index);
     if (roamer->isValid()) {
-        advance(roamer, index);
         retVal = roamer->getParty();
         roamer->invalidate();
     }
@@ -163,29 +163,24 @@ int Electorate::pickNextVoter(int difference)
     int retVal = -1;
     bool gotValid = false;
     if (difference > 0) {
-        if (roamer == citizens.end()) {
-            roamer = (citizens.end())--;
-        } else {
-            roamer++;
-        }
+        roamer++;
         while (!gotValid) {
+            if (roamer == citizens.end()) {
+                roamer = citizens.begin();
+            }
             if (roamer->isValid()) {
                 gotValid = true;
                 retVal = roamer->getParty();
                 roamer->invalidate();
             } else {
-                if (roamer == citizens.end()) {
-                    roamer = citizens.begin();
-                }
                 roamer++;
             }
         }
     } else {
         if (roamer == citizens.begin()) {
-            roamer = (citizens.begin())++;
-        } else {
-            roamer--;
+            roamer = citizens.end();
         }
+        roamer--;
         while (!gotValid) {
             if (roamer->isValid()) {
                 gotValid = true;
@@ -264,16 +259,16 @@ int main(int argc, char* argv[])
                 voterValid = true;
             }
         }
-        votes[partyVote]++;
+        (votes.at(partyVote))++;
         for (int j = 1; j < averageTurnout; j++)
         {
             int selected = direction(mt);
             unsigned int partyVote = electorate.pickNextVoter(selected);
-            votes[partyVote]++;
+            (votes.at(partyVote))++;
         }
         for (int j = 0; j < partyCount; j++)
         {
-            cout << scotland.getPartyName(j) << ":" << votes[j] << "  "; 
+            cout << scotland.getPartyName(j) << ":" << votes.at(j) << "  ";
         }
         cout << endl;
     }
