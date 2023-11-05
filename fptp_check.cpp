@@ -199,21 +199,21 @@ int Electorate::pickNextVoter(int difference)
 
 static void generatePartyResults(Results& overallResults)
 {
-    Party snp("SNP", 1242380);
+    Party snp("SNP", 977569);
     overallResults.pushParty(snp);
-    Party conservative("Conservative", 692939);
+    Party conservative("Conservative", 757949);
     overallResults.pushParty(conservative);
-    Party labour("Labour", 511838);
+    Party labour("Labour", 717007);
     overallResults.pushParty(labour);
-    Party libdems("Liberal Democrats", 263417);
+    Party libdems("Liberal Democrats", 179061);
     overallResults.pushParty(libdems);
-    Party greens("Scottish Greens", 28122);
+    Party greens("Scottish Greens", 5886);
     overallResults.pushParty(greens);
-    Party brexit("Brexit", 13243);
+    Party brexit("Brexit", 0);
     overallResults.pushParty(brexit);
-    Party ukip("UKIP", 3303);
+    Party ukip("UKIP", 5302);
     overallResults.pushParty(ukip);
-    Party others("others", 3819);
+    Party others("others", 6921);
     overallResults.pushParty(others);
 }
 
@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
     default_random_engine eng{static_cast<long unsigned int>(time(0))};
     // Create Scottish results
     cout << "Generating party results" << endl;
-    Results scotland(2759061, 59);
+    Results scotland(2649695, 59);
     generatePartyResults(scotland);
     // generate an electorate
     cout << "Generating electorate" << endl;
