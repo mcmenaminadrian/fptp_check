@@ -197,6 +197,44 @@ int Electorate::pickNextVoter(int difference)
     return retVal;
 }
 
+static void generatePartyResults(Results& overallResults)
+{
+    Party snp("SNP", 1242380);
+    overallResults.pushParty(snp);
+    Party conservative("Conservative", 692939);
+    overallResults.pushParty(conservative);
+    Party labour("Labour", 511838);
+    overallResults.pushParty(labour);
+    Party libdems("Liberal Democrats", 263417);
+    overallResults.pushParty(libdems);
+    Party greens("Scottish Greens", 28122);
+    overallResults.pushParty(greens);
+    Party brexit("Brexit", 13243);
+    overallResults.pushParty(brexit);
+    Party ukip("UKIP", 3303);
+    overallResults.pushParty(ukip);
+    Party others("others", 3819);
+    overallResults.pushParty(others);
+}
+
+unsigned int generateElectorate(Electorate& elex, Results& overallResults)
+{
+    const unsigned int partyCount = overallResults.getPartyCount();
+    for (int i = 0; i < partyCount; i++)
+    {
+        cout << "Generating " << overallResults.getPartyName(i) << " voters." << endl;
+        unsigned int totalPartyVotes = overallResults.getPartyVotes(i);
+        for (int j = 0; j < totalPartyVotes; j++)
+        {
+            //add to the list
+            Voter newVoter = Voter(i);
+            elex.addElector(newVoter);
+        }
+        cout << "Generation of " << overallResults.getPartyName(i) << " voters complete." << endl;
+    }
+    return partyCount;
+}
+
 int main(int argc, char* argv[])
 {
     // initialise random numbers
@@ -204,39 +242,11 @@ int main(int argc, char* argv[])
     // Create Scottish results
     cout << "Generating party results" << endl;
     Results scotland(2759061, 59);
-    Party snp("SNP", 1242380);
-    scotland.pushParty(snp);
-    Party conservative("Conservative", 692939);
-    scotland.pushParty(conservative);
-    Party labour("Labour", 511838);
-    scotland.pushParty(labour);
-    Party libdems("Liberal Democrats", 263417);
-    scotland.pushParty(libdems);
-    Party greens("Scottish Greens", 28122);
-    scotland.pushParty(greens);
-    Party brexit("Brexit", 13243);
-    scotland.pushParty(brexit);
-    Party ukip("UKIP", 3303);
-    scotland.pushParty(ukip);
-    Party others("others", 3819);
-    scotland.pushParty(others);
-
+    generatePartyResults(scotland);
     // generate an electorate
     cout << "Generating electorate" << endl;
     Electorate electorate;
-    const unsigned int partyCount = scotland.getPartyCount();
-    for (int i = 0; i < partyCount; i++)
-    {
-        cout << "Generating " << scotland.getPartyName(i) << " voters." << endl;
-        unsigned int totalPartyVotes = scotland.getPartyVotes(i);
-        for (int j = 0; j < totalPartyVotes; j++)
-        {
-            //add to the list
-            Voter newVoter = Voter(i);
-            electorate.addElector(newVoter);
-        }
-        cout << "Generation of " << scotland.getPartyName(i) << " voters complete." << endl;
-    }
+    unsigned int partyCount = generateElectorate(electorate, scotland);
     cout << "Now creating results" << endl;
     const unsigned int averageTurnout = scotland.getAverageTurnout();
     const int max_list = electorate.getSizeLeft();
